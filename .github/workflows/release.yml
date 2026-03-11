@@ -58,15 +58,22 @@ jobs:
         with:
           node-version: '24'
           registry-url: 'https://registry.npmjs.org'
+
       - name: Install dependencies
+        if: steps.version.outputs.version_tag != ''
         run: npm ci
 
       - name: Update package version
         if: steps.version.outputs.version_tag != ''
         run: npm version ${{ steps.version.outputs.version }} --no-git-tag-version
 
-      - name: Publish to npm
+      - name: Run GoReleaser
         if: steps.version.outputs.version_tag != ''
-        run: npm publish --access public
+        uses: goreleaser/goreleaser-action@v6
+        with:
+          distribution: goreleaser
+          version: latest
+          args: release --clean
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

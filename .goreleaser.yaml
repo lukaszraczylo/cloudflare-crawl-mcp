@@ -8,22 +8,19 @@ before:
     - npm ci
     - npm run build
 
-builds:
-  - id: cloudflare-crawl-mcp
-    dir: .
-    env:
-      - CGO_ENABLED=0
-    goos:
-      - linux
-      - darwin
-      - windows
-    goarch:
-      - amd64
-      - arm64
-
 archives:
   - id: default
     format: tarball
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    files:
+      - dist/**/*
+      - package.json
+      - README.md
+      - LICENSE
+
+source:
+  enabled: true
+  name_template: "{{ .ProjectName }}_{{ .Version }}_source"
 
 snapshot:
   name_template: "{{ .Tag }}-next"
@@ -42,21 +39,11 @@ release:
     name: cloudflare-crawl-mcp
   draft: false
 
-npm:
-  name: "@lukaszraczylo/cloudflare-crawl-mcp"
-  license: MIT
-  author: "Lukasz Raczylo <npmjs@raczylo.com>"
-  repository: https://github.com/lukaszraczylo/cloudflare-crawl-mcp
-  access: public
-  channel: "latest"
-  dir: "."
-  skip_upload: false
-  scripts:
-    post_pack: npm run build
-  keywords:
-    - cloudflare
-    - crawl
-    - mcp
-    - browser rendering
-  description: "A MCP tool to crawl Cloudflare's Browser Rendering API and extract data from the rendered pages."
+publishers:
+  - name: npm
+    cmd: npm publish --access public
+    env:
+      - NODE_AUTH_TOKEN={{ .Env.NPM_TOKEN }}
+    dir: "."
+    disable: "{{ .IsSnapshot }}"
   
