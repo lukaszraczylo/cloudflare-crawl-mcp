@@ -3,10 +3,13 @@
 
 project_name: cloudflare-crawl-mcp
 
+dist: .goreleaser-dist
+
 before:
   hooks:
     - npm ci
     - npm run build
+    - npm version {{ .Version }} --no-git-tag-version
 
 archives:
   - id: default
