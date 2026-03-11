@@ -216,7 +216,7 @@ describe('getEnv', () => {
     },
   ];
 
-  it.each(testCases)('$name', ({ envKey, envValue, expected, expectedError }) => {
+  it.each(testCases)('$name', ({ envKey, envValue, expected, expectedError }: { envKey: string; envValue: string | undefined; expected?: string; expectedError?: string }) => {
     if (expectedError) {
       if (envValue === undefined) {
         delete process.env[envKey];
@@ -313,14 +313,14 @@ describe('buildCrawlOptions', () => {
     },
   ];
 
-  it.each(testCases)('$name', ({ args, formats, expected }) => {
+  it.each(testCases)('$name', ({ args, formats, expected }: { args: CrawlArgs; formats: string[]; expected: CrawlOptions }) => {
     const result = buildCrawlOptions(args, formats);
     expect(result).toEqual(expected);
   });
 });
 
 describe('formatMarkdownResult', () => {
-  const testCases = [
+  const testCases: Array<{ name: string; result: any; expectedContains: string[] }> = [
     {
       name: 'formats single completed page',
       result: {
@@ -414,7 +414,7 @@ describe('formatMarkdownResult', () => {
     },
   ];
 
-  it.each(testCases)('$name', ({ result, expectedContains }) => {
+  it.each(testCases)('$name', ({ result, expectedContains }: { result: any; expectedContains: string[] }) => {
     const output = formatMarkdownResult(result);
     expectedContains.forEach((expected) => {
       expect(output).toContain(expected);
@@ -423,7 +423,7 @@ describe('formatMarkdownResult', () => {
 });
 
 describe('formatHtmlResult', () => {
-  const testCases = [
+  const testCases: Array<{ name: string; result: any; expectedContains: string[] }> = [
     {
       name: 'formats single completed page with HTML',
       result: {
@@ -480,7 +480,7 @@ describe('formatHtmlResult', () => {
     },
   ];
 
-  it.each(testCases)('$name', ({ result, expectedContains }) => {
+  it.each(testCases)('$name', ({ result, expectedContains }: { result: any; expectedContains: string[] }) => {
     const output = formatHtmlResult(result);
     expectedContains.forEach((expected) => {
       expect(output).toContain(expected);
@@ -489,7 +489,7 @@ describe('formatHtmlResult', () => {
 });
 
 describe('formatJsonResult', () => {
-  const testCases = [
+  const testCases: Array<{ name: string; result: any }> = [
     {
       name: 'formats single completed page as JSON',
       result: {
@@ -550,13 +550,13 @@ describe('formatJsonResult', () => {
     },
   ];
 
-  it.each(testCases)('$name', ({ result }) => {
+  it.each(testCases)('$name', ({ result }: { result: any }) => {
     const output = formatJsonResult(result);
     const parsed = JSON.parse(output);
-    
+
     expect(parsed).toHaveProperty('summary');
     expect(parsed).toHaveProperty('pages');
-    
+
     const completedCount = result.records.filter((r: any) => r.status === 'completed').length;
     expect(parsed.summary.completed).toBe(completedCount);
     expect(parsed.summary.total).toBe(result.total);
@@ -565,7 +565,7 @@ describe('formatJsonResult', () => {
 });
 
 describe('handleErrorResult', () => {
-  const testCases = [
+  const testCases: Array<{ name: string; result: any; jobId: string; expectedError: boolean; expectedContains: string[] }> = [
     {
       name: 'handles errored status',
       result: { status: 'errored' },
@@ -603,7 +603,7 @@ describe('handleErrorResult', () => {
     },
   ];
 
-  it.each(testCases)('$name', ({ result, jobId, expectedError, expectedContains }) => {
+  it.each(testCases)('$name', ({ result, jobId, expectedError, expectedContains }: { result: any; jobId: string; expectedError: boolean; expectedContains: string[] }) => {
     const output = handleErrorResult(result, jobId);
     expect(output.isError).toBe(expectedError);
     expectedContains.forEach((expected) => {
@@ -617,7 +617,7 @@ describe('initiateCrawl', () => {
     vi.stubGlobal('fetch', vi.fn());
   });
 
-  const testCases = [
+  const testCases: Array<{ name: string; accountId: string; apiToken: string; options: CrawlOptions; mockResponse: any; mockStatus?: number; expectedJobId?: string; expectedError?: string }> = [
     {
       name: 'initiates crawl successfully',
       accountId: 'acc-123',
@@ -645,7 +645,7 @@ describe('initiateCrawl', () => {
     },
   ];
 
-  it.each(testCases)('$name', async ({ accountId, apiToken, options, mockResponse, mockStatus, expectedJobId, expectedError }) => {
+  it.each(testCases)('$name', async ({ accountId, apiToken, options, mockResponse, mockStatus, expectedJobId, expectedError }: { accountId: string; apiToken: string; options: CrawlOptions; mockResponse: any; mockStatus?: number; expectedJobId?: string; expectedError?: string }) => {
     const fetchMock = vi.mocked(fetch);
     
     if (expectedError) {
@@ -710,7 +710,7 @@ describe('waitForCrawl', () => {
     },
   ];
 
-  it.each(testCases)('$name', async ({ accountId, apiToken, jobId, mockResponse, expectedStatus }) => {
+  it.each(testCases)('$name', async ({ accountId, apiToken, jobId, mockResponse, expectedStatus }: { accountId: string; apiToken: string; jobId: string; mockResponse: any; expectedStatus: string }) => {
     const fetchMock = vi.mocked(fetch);
     
     fetchMock.mockResolvedValue(new Response(JSON.stringify(mockResponse), { 

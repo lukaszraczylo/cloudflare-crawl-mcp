@@ -8,7 +8,8 @@
     "outDir": "dist",
     "rootDir": "src",
     "declaration": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "types": ["vitest/globals", "node"]
   },
   "include": ["src/**/*"]
 }
