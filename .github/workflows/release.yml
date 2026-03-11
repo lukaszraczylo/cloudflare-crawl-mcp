@@ -59,12 +59,12 @@ jobs:
           node-version: '20'
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Run GoReleaser
+      - name: Update package version
         if: steps.version.outputs.version_tag != ''
-        uses: goreleaser/goreleaser-action@v6
-        with:
-          version: latest
-          args: release --clean
+        run: npm version ${{ steps.version.outputs.version }} --no-git-tag-version
+
+      - name: Publish to npm
+        if: steps.version.outputs.version_tag != ''
+        run: npm publish --access public
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
