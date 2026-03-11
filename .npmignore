@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+release/
+
+# Test coverage
+coverage/
+
+# Development
+.vscode/
+.idea/
+*.log
+
+# Git
+.git/
+.github/
+
+# Config
+.env
+.env.*
+!.env.example
+
+# Misc
+*.ts
+!*.d.ts
+tsconfig.json
+vitest.config.ts
+.goreleaser.yaml

@@ -1,0 +1,26 @@
+{
+  "name": "@lukaszraczylo/cloudflare-crawl-mcp",
+  "version": "1.0.0",
+  "description": "MCP server for Cloudflare Browser Rendering Crawl API",
+  "author": "Lukasz Raczylo <hello@raczylo.com> (https://raczylo.com)",
+  "main": "dist/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.4.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.0.18"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

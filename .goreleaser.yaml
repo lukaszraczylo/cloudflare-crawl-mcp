@@ -1,0 +1,51 @@
+# Goreleaser config for @lukaszraczylo/cloudflare-crawl-mcp
+# Publishes to npm on release
+
+project_name: cloudflare-crawl-mcp
+
+before:
+  hooks:
+    - npm ci
+    - npm run build
+
+builds:
+  - id: cloudflare-crawl-mcp
+    dir: .
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - id: default
+    format: tarball
+
+snapshot:
+  name_template: "{{ .Tag }}-next"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
+      - "^chore:"
+
+release:
+  github:
+    owner: lukaszraczylo
+    name: cloudflare-crawl-mcp
+  draft: false
+
+npm:
+  name: "@lukaszraczylo/cloudflare-crawl-mcp"
+  channel: "latest"
+  dir: "."
+  skip_upload: false
+  scripts:
+    post_pack: npm run build
