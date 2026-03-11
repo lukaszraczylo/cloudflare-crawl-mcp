@@ -213,11 +213,16 @@ Examples:
 ### Commands
 
 ```bash
-npm run build        # Build TypeScript
-npm start           # Run server
-npm test            # Run tests
-npm run test:watch  # Run tests in watch mode
+npm install             # Install dependencies
+npm run typecheck       # Type check with tsc
+npm run lint            # Lint with ESLint
+npm run build           # Build TypeScript
+npm start               # Run server
+npm test                # Run tests
+npm run test:watch      # Run tests in watch mode
 ```
+
+CI runs typecheck, lint, build and test.
 
 ### Testing
 

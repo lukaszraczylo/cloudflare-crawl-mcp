@@ -27,6 +27,8 @@ jobs:
           node-version: '20'
           cache: 'npm'
       - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
       - run: npm run build
       - run: npm test
 
@@ -56,16 +58,15 @@ jobs:
       - uses: actions/setup-node@v4
         if: steps.version.outputs.version_tag != ''
         with:
-          node-version: '24'
+          node-version: '20'
           registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
 
-      - name: Run GoReleaser
+      - name: Publish to npm
         if: steps.version.outputs.version_tag != ''
-        uses: goreleaser/goreleaser-action@v6
-        with:
-          distribution: goreleaser
-          version: latest
-          args: release --clean
+        run: |
+          npm ci
+          npm version ${{ steps.version.outputs.version }} --no-git-tag-version
+          npm publish --access public
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

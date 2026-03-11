@@ -3,6 +3,9 @@
 
 project_name: cloudflare-crawl-mcp
 
+builds:
+  - skip: true
+
 dist: .goreleaser-dist
 
 before:

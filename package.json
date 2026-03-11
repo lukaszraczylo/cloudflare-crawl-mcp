@@ -10,6 +10,8 @@
     "start": "node dist/index.js",
     "test": "vitest run",
     "test:watch": "vitest",
+    "lint": "eslint src --ext .ts",
+    "typecheck": "tsc --noEmit",
     "prepublishOnly": "npm run build"
   },
   "dependencies": {
@@ -17,8 +19,16 @@
   },
   "devDependencies": {
     "@types/node": "^25.4.0",
+    "@typescript-eslint/eslint-plugin": "^8.26.1",
+    "@typescript-eslint/parser": "^8.26.1",
+    "eslint": "^9.25.0",
+    "eslint-formatter-compact": "^9.0.1",
     "typescript": "^5.9.3",
+    "typescript-eslint": "^8.26.1",
     "vitest": "^4.0.18"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "publishConfig": {
     "access": "public"
