@@ -4,6 +4,12 @@
   "description": "MCP server for Cloudflare Browser Rendering Crawl API",
   "author": "Lukasz Raczylo <hello@raczylo.com> (https://raczylo.com)",
   "main": "dist/index.js",
+  "files": [
+    "dist/**/*.js",
+    "dist/**/*.d.ts",
+    "!dist/**/*.test.*",
+    "!dist/**/integration.*"
+  ],
   "type": "module",
   "scripts": {
     "build": "tsc",
