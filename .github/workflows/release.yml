@@ -58,9 +58,13 @@ jobs:
       - uses: actions/setup-node@v4
         if: steps.version.outputs.version_tag != ''
         with:
-          node-version: '20'
+          node-version: '22'
           registry-url: 'https://registry.npmjs.org'
           cache: 'npm'
+
+      - name: Upgrade npm for trusted publishing
+        if: steps.version.outputs.version_tag != ''
+        run: npm install -g npm@^11.5.1
 
       - name: Publish to npm
         if: steps.version.outputs.version_tag != ''
